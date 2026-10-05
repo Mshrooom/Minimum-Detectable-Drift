@@ -161,4 +161,4 @@ An editable **Blender** scene in [`blender/`](blender/) contains the 517 mapped 
 
 ---
 
-*This repository is a research portfolio, not a published or peer-reviewed paper. Feedback from SAR and remote-sensing practitioners is very welcome.*
+*This repository is a research portfolio, not a published or peer-reviewed paper. Feedback from SAR and remote-sensing practitioners is very welcome.* AI tools assisted only with building the interactive website; all data analysis, validation, and reported results were independently computed and verified.
