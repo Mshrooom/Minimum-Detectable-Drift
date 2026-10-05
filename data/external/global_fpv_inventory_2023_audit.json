@@ -1,0 +1,15 @@
+{
+  "source_rows": 643,
+  "mappable_rows": 517,
+  "coordinate_missing_rows": 126,
+  "countries": 28,
+  "survey_cutoff": "2023-04",
+  "source_doi": "10.1016/j.solener.2023.112244",
+  "source_pdf_sha256": "20d9a00d2f7f4364cb4f3cbf520b6391111f5c066b7632540e2270fc82f9bf4e",
+  "notes": [
+    "The source is a survey through April 2023, not a live global registry.",
+    "Rows without coordinates remain in the CSV but cannot be rendered as points.",
+    "O in the source longitude is treated as west (ouest).",
+    "Omitted longitude hemispheres are inferred from country and explicitly flagged."
+  ]
+}

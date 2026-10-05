@@ -1,0 +1,262 @@
+{
+  "experiment": "FPV C-band Sentinel-1 versus L-band NISAR observability benchmark",
+  "self_test": {
+    "status": "PASS",
+    "measured_dx": 1.995638132095337,
+    "measured_dy": -1.4738600254058838,
+    "error_px": 0.026501399272468064
+  },
+  "channel_trials": 538560,
+  "consensus_trials": 269280,
+  "md_boundaries": [
+    {
+      "sensor": "NISAR_L",
+      "regime": "harmonized_20m",
+      "detector": "copol",
+      "pairs": 15,
+      "MD50_m": 11,
+      "MD50_ci95_lower_m": 11.0,
+      "MD50_ci95_upper_m": 15.0,
+      "MD80_m": 20,
+      "MD80_ci95_lower_m": 16.0,
+      "MD80_ci95_upper_m": 23.0,
+      "MD95_m": 25,
+      "MD95_ci95_lower_m": 22.0,
+      "MD95_ci95_upper_m": 26.0
+    },
+    {
+      "sensor": "NISAR_L",
+      "regime": "harmonized_20m",
+      "detector": "dualpol_consensus",
+      "pairs": 15,
+      "MD50_m": 14,
+      "MD50_ci95_lower_m": 12.0,
+      "MD50_ci95_upper_m": 17.0,
+      "MD80_m": 21,
+      "MD80_ci95_lower_m": 18.0,
+      "MD80_ci95_upper_m": 26.0,
+      "MD95_m": 27,
+      "MD95_ci95_lower_m": 23.0,
+      "MD95_ci95_upper_m": 32.0
+    },
+    {
+      "sensor": "NISAR_L",
+      "regime": "matched_10m",
+      "detector": "copol",
+      "pairs": 6,
+      "MD50_m": 5,
+      "MD50_ci95_lower_m": 4.0,
+      "MD50_ci95_upper_m": 6.0,
+      "MD80_m": 8,
+      "MD80_ci95_lower_m": 6.0,
+      "MD80_ci95_upper_m": 10.0,
+      "MD95_m": "not_reached",
+      "MD95_ci95_lower_m": 61.0,
+      "MD95_ci95_upper_m": ">60"
+    },
+    {
+      "sensor": "NISAR_L",
+      "regime": "matched_10m",
+      "detector": "dualpol_consensus",
+      "pairs": 6,
+      "MD50_m": 6,
+      "MD50_ci95_lower_m": 5.0,
+      "MD50_ci95_upper_m": 6.0,
+      "MD80_m": 8,
+      "MD80_ci95_lower_m": 8.0,
+      "MD80_ci95_upper_m": 9.0,
+      "MD95_m": "not_reached",
+      "MD95_ci95_lower_m": 61.0,
+      "MD95_ci95_upper_m": ">60"
+    },
+    {
+      "sensor": "S1_C",
+      "regime": "harmonized_20m",
+      "detector": "copol",
+      "pairs": 270,
+      "MD50_m": 17,
+      "MD50_ci95_lower_m": 16.0,
+      "MD50_ci95_upper_m": 17.0,
+      "MD80_m": 23,
+      "MD80_ci95_lower_m": 22.0,
+      "MD80_ci95_upper_m": 23.0,
+      "MD95_m": 30,
+      "MD95_ci95_lower_m": 29.0,
+      "MD95_ci95_upper_m": 32.0
+    },
+    {
+      "sensor": "S1_C",
+      "regime": "harmonized_20m",
+      "detector": "dualpol_consensus",
+      "pairs": 270,
+      "MD50_m": 20,
+      "MD50_ci95_lower_m": 20.0,
+      "MD50_ci95_upper_m": 21.0,
+      "MD80_m": 27,
+      "MD80_ci95_lower_m": 26.0,
+      "MD80_ci95_upper_m": 28.0,
+      "MD95_m": 36,
+      "MD95_ci95_lower_m": 34.0,
+      "MD95_ci95_upper_m": 38.0
+    },
+    {
+      "sensor": "S1_C",
+      "regime": "matched_10m",
+      "detector": "copol",
+      "pairs": 270,
+      "MD50_m": 9,
+      "MD50_ci95_lower_m": 8.0,
+      "MD50_ci95_upper_m": 9.0,
+      "MD80_m": 12,
+      "MD80_ci95_lower_m": 12.0,
+      "MD80_ci95_upper_m": 12.0,
+      "MD95_m": 15,
+      "MD95_ci95_lower_m": 15.0,
+      "MD95_ci95_upper_m": 17.0
+    },
+    {
+      "sensor": "S1_C",
+      "regime": "matched_10m",
+      "detector": "dualpol_consensus",
+      "pairs": 270,
+      "MD50_m": 11,
+      "MD50_ci95_lower_m": 10.0,
+      "MD50_ci95_upper_m": 11.0,
+      "MD80_m": 14,
+      "MD80_ci95_lower_m": 14.0,
+      "MD80_ci95_upper_m": 15.0,
+      "MD95_m": 20,
+      "MD95_ci95_lower_m": 19.0,
+      "MD95_ci95_upper_m": 21.0
+    }
+  ],
+  "crossovers": [
+    {
+      "comparison": "all_available",
+      "regime": "harmonized_20m",
+      "detector": "copol",
+      "s1_pairs": 270,
+      "nisar_pairs": 15,
+      "supported_crossover_m": 1
+    },
+    {
+      "comparison": "all_available",
+      "regime": "harmonized_20m",
+      "detector": "dualpol_consensus",
+      "s1_pairs": 270,
+      "nisar_pairs": 15,
+      "supported_crossover_m": 4
+    },
+    {
+      "comparison": "all_available",
+      "regime": "matched_10m",
+      "detector": "copol",
+      "s1_pairs": 270,
+      "nisar_pairs": 6,
+      "supported_crossover_m": 1
+    },
+    {
+      "comparison": "all_available",
+      "regime": "matched_10m",
+      "detector": "dualpol_consensus",
+      "s1_pairs": 270,
+      "nisar_pairs": 6,
+      "supported_crossover_m": 2
+    },
+    {
+      "comparison": "matched_pair_depth",
+      "regime": "harmonized_20m",
+      "detector": "copol",
+      "s1_pairs": 15,
+      "nisar_pairs": 15,
+      "supported_crossover_m": 2
+    },
+    {
+      "comparison": "matched_pair_depth",
+      "regime": "harmonized_20m",
+      "detector": "dualpol_consensus",
+      "s1_pairs": 15,
+      "nisar_pairs": 15,
+      "supported_crossover_m": 4
+    },
+    {
+      "comparison": "matched_pair_depth",
+      "regime": "matched_10m",
+      "detector": "copol",
+      "s1_pairs": 6,
+      "nisar_pairs": 6,
+      "supported_crossover_m": "none_through_60m"
+    },
+    {
+      "comparison": "matched_pair_depth",
+      "regime": "matched_10m",
+      "detector": "dualpol_consensus",
+      "s1_pairs": 6,
+      "nisar_pairs": 6,
+      "supported_crossover_m": 2
+    }
+  ],
+  "power_audit": [
+    {
+      "sensor": "NISAR_L",
+      "site": "piolenc",
+      "calibration_pairs": 4,
+      "test_pairs": 6,
+      "publishable_calibration_target": 10,
+      "publishable_test_target": 10,
+      "status": "UNDERPOWERED"
+    },
+    {
+      "sensor": "NISAR_L",
+      "site": "sirindhorn",
+      "calibration_pairs": 3,
+      "test_pairs": 3,
+      "publishable_calibration_target": 10,
+      "publishable_test_target": 10,
+      "status": "UNDERPOWERED"
+    },
+    {
+      "sensor": "NISAR_L",
+      "site": "tengeh",
+      "calibration_pairs": 4,
+      "test_pairs": 6,
+      "publishable_calibration_target": 10,
+      "publishable_test_target": 10,
+      "status": "UNDERPOWERED"
+    },
+    {
+      "sensor": "S1_C",
+      "site": "piolenc",
+      "calibration_pairs": 181,
+      "test_pairs": 129,
+      "publishable_calibration_target": 10,
+      "publishable_test_target": 10,
+      "status": "ADEQUATE"
+    },
+    {
+      "sensor": "S1_C",
+      "site": "sirindhorn",
+      "calibration_pairs": 133,
+      "test_pairs": 92,
+      "publishable_calibration_target": 10,
+      "publishable_test_target": 10,
+      "status": "ADEQUATE"
+    },
+    {
+      "sensor": "S1_C",
+      "site": "tengeh",
+      "calibration_pairs": 68,
+      "test_pairs": 49,
+      "publishable_calibration_target": 10,
+      "publishable_test_target": 10,
+      "status": "ADEQUATE"
+    }
+  ],
+  "interpretation_rule": "L-band dominance is supported only where the lower 95% bootstrap bound of P(L)-P(C) is above zero for three consecutive magnitudes.",
+  "software": {
+    "python": "3.12.13 (main, Mar  4 2026, 09:23:07) [GCC 11.4.0]",
+    "numpy": "2.0.2",
+    "opencv": "4.13.0",
+    "rasterio": "1.5.0"
+  }
+}

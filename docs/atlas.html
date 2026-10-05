@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive geospatial evidence atlas for the NISAR L-band and Sentinel-1 C-band floating-photovoltaic observability experiment.">
+  <title>Evidence Atlas · FPV SAR Observability</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%230b1720' d='M0 0h64v64H0z'/%3E%3Cpath fill='none' stroke='%23f0544f' stroke-width='6' d='M8 42l17-9 14 5 17-16'/%3E%3Ccircle cx='25' cy='33' r='5' fill='%23f3c969'/%3E%3C/svg%3E">
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/atlas.css">
+</head>
+<body>
+  <header class="atlas-header">
+    <a class="atlas-brand" href="paper.html" aria-label="Open the research paper">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span><b>FPV / SAR</b><small>evidence atlas</small></span>
+    </a>
+    <div class="header-title">
+      <span>Interactive supplement</span>
+      <b>Cross-sensor observability audit</b>
+    </div>
+    <nav aria-label="Project links">
+      <a href="paper.html">Research paper</a>
+      <a href="../RESEARCH_REPORT.md">Methods report</a>
+      <a href="../data/derived/md_boundaries.csv">MD data</a>
+    </nav>
+  </header>
+
+  <section class="atlas-hero">
+    <p>REMOTE-SENSING RESEARCH PORTFOLIO</p>
+    <h1>Cross-Sensor SAR Observability</h1>
+    <span>Interactive raster evidence, controlled displacement injection and geographic sensitivity analysis</span>
+  </section>
+
+  <main class="atlas-shell">
+    <aside class="atlas-sidebar">
+      <fieldset class="scene-picker">
+        <legend>Evidence view</legend>
+        <button type="button" data-scene="overview">Study sites</button>
+        <button type="button" data-scene="tengeh" class="active" aria-pressed="true">Injection laboratory</button>
+        <button type="button" data-scene="yamakura">Event localization</button>
+        <button type="button" data-scene="omkareshwar">NISAR screen</button>
+      </fieldset>
+
+      <section class="scene-summary" aria-live="polite">
+        <p class="scene-index" id="scene-index">CHAPTER 01 · CONTROLLED GROUND TRUTH</p>
+        <h2 id="scene-title">Tengeh controlled injection</h2>
+        <p id="scene-subtitle"></p>
+      </section>
+
+      <section class="layer-controls" id="layer-controls">
+        <div class="control-heading"><span>Raster stage</span><output id="active-layer-kind"></output></div>
+        <div class="layer-list" id="layer-list"></div>
+      </section>
+
+      <label class="opacity-control" for="raster-opacity">
+        <span>Raster opacity <output id="opacity-value">92%</output></span>
+        <input id="raster-opacity" type="range" min="0" max="100" value="92">
+      </label>
+
+      <fieldset class="overlay-controls" id="overlay-controls">
+        <legend>Map evidence</legend>
+        <label><input type="checkbox" id="show-targets" checked> Target / footprint</label>
+        <label><input type="checkbox" id="show-controls" checked> Stable controls</label>
+        <label id="vector-toggle"><input type="checkbox" id="show-vectors" checked> Injected + recovered vectors</label>
+      </fieldset>
+
+      <dl class="metric-readout" id="metric-readout"></dl>
+      <p class="scene-interpretation" id="scene-interpretation"></p>
+
+      <details class="provenance-note">
+        <summary>Layer provenance and claim boundary</summary>
+        <p id="provenance-copy"></p>
+      </details>
+    </aside>
+
+    <section class="map-stage" aria-label="Interactive geospatial evidence map">
+      <div class="map-toolbar">
+        <div><span id="map-mode">RASTER EVIDENCE</span><b id="map-layer-title">Reference · 08 Jan 2022</b></div>
+        <div class="coordinate-readout"><span id="cursor-coordinate">Move over map for coordinates</span><button type="button" id="reset-view">Reset extent</button></div>
+      </div>
+      <div id="atlas-map" role="application" aria-label="Georeferenced raster and region-of-interest map"></div>
+      <div class="map-legend" id="map-legend" aria-label="Map legend">
+        <span><i class="legend-target"></i>FPV target</span>
+        <span><i class="legend-control"></i>stable control</span>
+        <span class="legend-vector"><i class="legend-injected"></i>injected 40 m</span>
+        <span class="legend-vector"><i class="legend-recovered"></i>recovered vector</span>
+      </div>
+      <div class="map-footnote"><span>Basemap © OpenStreetMap / CARTO</span><span id="extent-readout"></span></div>
+    </section>
+  </main>
+
+  <section class="site-matrix" id="site-matrix">
+    <div class="matrix-heading">
+      <p class="section-label">Harmonized 20 m · co-polarized detector</p>
+      <h2>Geography changes the detection boundary.</h2>
+      <p>Click a row to locate the site. MD values are the first injected magnitudes reaching the fitted recovery probability.</p>
+    </div>
+    <div class="matrix-table-wrap">
+      <table>
+        <thead><tr><th>Site</th><th>NISAR test pairs</th><th>Sentinel-1 test pairs</th><th>L-band MD50 / 80 / 95</th><th>C-band MD50 / 80 / 95</th><th>Site reading</th></tr></thead>
+        <tbody>
+          <tr data-overview-site="Piolenc"><th>Piolenc, France</th><td>6</td><td>129</td><td>11 / 17 / 25 m</td><td>19 / 26 / 32 m</td><td>L-band lower in this sample</td></tr>
+          <tr data-overview-site="Sirindhorn"><th>Sirindhorn, Thailand</th><td>3</td><td>92</td><td>15 / 21 / 24 m</td><td>16 / 21 / 30 m</td><td>separation at MD95</td></tr>
+          <tr data-overview-site="Tengeh"><th>Tengeh, Singapore</th><td>6</td><td>49</td><td>12 / 18 / 25 m</td><td>12 / 17 / 21 m</td><td>C-band lower at MD95</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="matrix-warning"><b>Power constraint:</b> all NISAR site strata remain below the prespecified ≥10 calibration and ≥10 test-pair target. This atlas visualizes the evidence; it does not upgrade initial bounds into a population-wide sensor ranking.</p>
+  </section>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script src="assets/atlas-data.js"></script>
+  <script src="assets/atlas.js"></script>
+</body>
+</html>

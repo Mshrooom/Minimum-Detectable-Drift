@@ -1,0 +1,8 @@
+{
+  "scenes": 1377,
+  "channel_pair_rows": 1356,
+  "unique_pairs": 678,
+  "calibration_pairs": 393,
+  "test_pairs": 285,
+  "cross_split_scene_overlap": []
+}

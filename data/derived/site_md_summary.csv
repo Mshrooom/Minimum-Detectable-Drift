@@ -1,0 +1,8 @@
+site,country,iso3,latitude,longitude,sensor,band,calibration_pairs,test_pairs,md50_copol_m,md80_copol_m,md95_copol_m,md50_dual_m,md80_dual_m,md95_dual_m
+Piolenc,France,FRA,44.1555,4.7280,NISAR,L,4,6,11,17,25,13,18,24
+Piolenc,France,FRA,44.1555,4.7280,Sentinel-1,C,181,129,19,26,32,23,30,38
+Sirindhorn,Thailand,THA,15.1980,105.4440,NISAR,L,3,3,15,21,24,16,21,25
+Sirindhorn,Thailand,THA,15.1980,105.4440,Sentinel-1,C,133,92,16,21,30,17,22,30
+Tengeh,Singapore,SGP,1.3500,103.6430,NISAR,L,4,6,12,18,25,16,26,32
+Tengeh,Singapore,SGP,1.3500,103.6430,Sentinel-1,C,68,49,12,17,21,18,24,32
+

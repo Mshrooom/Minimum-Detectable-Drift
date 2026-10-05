@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A research portfolio on direction-aware floating-photovoltaic motion observability in early NISAR L-band and historical Sentinel-1 C-band SAR.">
+  <title>FPV Motion Observability · L-band × C-band</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+  <link href="assets/style.css" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230d1719'/%3E%3Cpath d='M9 38c12-16 34-16 46 0' fill='none' stroke='%23f15a4a' stroke-width='5'/%3E%3Cpath d='M15 45c9-10 25-10 34 0' fill='none' stroke='%232a7fbd' stroke-width='5'/%3E%3Ccircle cx='32' cy='49' r='4' fill='%23f0c75e'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Research project home">
+      <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span><b>FPV</b> / SAR observability</span>
+    </a>
+    <nav aria-label="Research chapters">
+      <a href="#theory">Theory</a>
+      <a href="#qgis">QGIS</a>
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#limits">Limits</a>
+      <a href="atlas.html">Atlas</a>
+    </nav>
+    <a class="repo-link" href="atlas.html">Evidence atlas</a>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="kicker">Independent remote-sensing study · research portfolio · v0.3</p>
+        <h1>When does floating solar motion become <em>observable</em> from space?</h1>
+        <p class="hero-deck">A controlled comparison of early NISAR L-band and historical Sentinel-1 C-band amplitude imagery—built from real rasters, locked temporal splits and 807,840 synthetic recovery trials.</p>
+        <div class="hero-links">
+          <a class="primary-action" href="#research-question">Read the experiment</a>
+          <a href="../RESEARCH_REPORT.md">Full research report</a>
+          <a href="../notebooks/cross_sensor_observability_kaggle.ipynb">Kaggle notebook</a>
+          <a href="atlas.html">Georeferenced evidence atlas</a>
+        </div>
+        <dl class="audit-strip" aria-label="Experiment scale">
+          <div><dt>678</dt><dd>unique pairs</dd></div>
+          <div><dt>3</dt><dd>FPV sites</dd></div>
+          <div><dt>1–60 m</dt><dd>injected motion</dd></div>
+          <div><dt>0</dt><dd>split leakage</dd></div>
+        </dl>
+      </div>
+      <figure class="hero-figure">
+        <img src="assets/research/cross_sensor_copol_20m.png" alt="Harmonized 20 metre co-polarized NISAR and Sentinel-1 directionally correct detection curves">
+        <figcaption><span>Primary result</span>Pooled 20 m co-pol recovery curves. Bands are acquisition-pair clustered 95% intervals.</figcaption>
+      </figure>
+    </section>
+
+    <section class="paper-intro" id="research-question">
+      <div class="section-index">00 / ABSTRACT</div>
+      <div class="abstract-grid">
+        <h2>A measurement boundary, not another before-and-after arrow.</h2>
+        <div class="abstract-copy">
+          <p class="lead">FPV arrays are repetitive, speckled radar targets. A plausible vector from one image pair may reflect registration, water background or correlation ambiguity rather than physical motion.</p>
+          <p>This project estimates MD50, MD80 and MD95: the injected persistent displacement required for 50%, 80% and 95% directionally correct recovery. NISAR and Sentinel-1 are placed on the same physical grid and evaluated by the same frozen algorithm.</p>
+          <p class="conclusion-line"><strong>Finding:</strong> early pooled NISAR bounds are lower at 20 m, but Tengeh removes any defensible claim of universal L-band superiority.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="theory">
+      <div class="section-index">01 / THEORY</div>
+      <div class="chapter-heading">
+        <p class="kicker">Falsifiable premise</p>
+        <h2>Longer wavelength may preserve structural texture—but wavelength is not the whole system.</h2>
+      </div>
+      <div class="theory-grid">
+        <article class="sensor-card l-card">
+          <div class="sensor-wave"><span></span><span></span><span></span></div>
+          <p class="sensor-label">NISAR · L-SAR</p>
+          <strong>24 cm</strong>
+          <p>Calibrated Level-2 GCOV diagonal covariance terms, terrain corrected and geocoded at 10 m or 20 m depending on acquisition mode.</p>
+          <a href="https://nisar.jpl.nasa.gov/mission/quick-facts/">Official mission facts</a>
+        </article>
+        <article class="sensor-card c-card">
+          <div class="sensor-wave short"><span></span><span></span><span></span><span></span><span></span></div>
+          <p class="sensor-label">Sentinel-1 · C-SAR</p>
+          <strong>C-band</strong>
+          <p>Historical radiometrically terrain-corrected backscatter, providing far greater temporal depth for the same installations.</p>
+          <a href="https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1">Official mission overview</a>
+        </article>
+        <aside class="theory-model">
+          <p class="mono">OBSERVABILITY MODEL</p>
+          <div class="equation">MD<sub>p</sub> = f(λ, g, m, q, a)</div>
+          <ul>
+            <li><b>λ</b> radar wavelength</li>
+            <li><b>g</b> viewing geometry and grid</li>
+            <li><b>m</b> array morphology</li>
+            <li><b>q</b> temporal image quality</li>
+            <li><b>a</b> detector and acceptance rule</li>
+          </ul>
+          <p>The experiment changes the sensor archive while freezing the grid, injected physical motion and decision logic.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="chapter qgis-chapter" id="qgis">
+      <div class="section-index">02 / QGIS LAB</div>
+      <div class="chapter-heading split-heading">
+        <div>
+          <p class="kicker">How the question changed</p>
+          <h2>Manual raster inspection exposed the failure of single-vector storytelling.</h2>
+        </div>
+        <p>QGIS was used to validate target visibility, raster alignment, sign conventions and spatial localization before automation. Quantitative MD curves came from the frozen Python engine.</p>
+      </div>
+
+      <div class="qgis-workbench">
+        <figure class="workbench-main">
+          <img id="lab-image" src="assets/research/qgis_raster_calculator.png" alt="QGIS raster calculator showing a post minus pre Sentinel-1 expression">
+          <figcaption id="lab-caption"><b>Raster construction.</b> Post-event minus pre-event backscatter was saved as GeoTIFF and styled with a diverging ramp centred on zero.</figcaption>
+        </figure>
+        <div class="lab-controls" aria-label="QGIS evidence gallery">
+          <button class="lab-button active" data-image="assets/research/qgis_raster_calculator.png" data-alt="QGIS raster calculator showing a post minus pre Sentinel-1 expression" data-caption="&lt;b&gt;Raster construction.&lt;/b&gt; Post-event minus pre-event backscatter was saved as GeoTIFF and styled with a diverging ramp centred on zero."><span>01</span>Raster calculator</button>
+          <button class="lab-button" data-image="assets/research/qgis_yamakura_difference_rois.png" data-alt="QGIS Yamakura difference raster with documented damage and stable sectors" data-caption="&lt;b&gt;Spatial diagnosis.&lt;/b&gt; Change localized to the documented damaged sector while the southern internal control stayed comparatively stable."><span>02</span>Damage-sector ROIs</button>
+          <button class="lab-button" data-image="assets/research/yamakura_s1_event_pairs.png" data-alt="Three Sentinel-1 orbit pairs before and after Typhoon Faxai at Yamakura" data-caption="&lt;b&gt;Independent geometry check.&lt;/b&gt; Three relative orbits bracket Typhoon Faxai; each was evaluated against interval-matched quiet pairs."><span>03</span>Multi-orbit stack</button>
+          <button class="lab-button" data-image="assets/research/nisar_worldview_sequence.png" data-alt="Eight-date NISAR Worldview RGB sequence over Omkareshwar" data-caption="&lt;b&gt;Exploratory NISAR screen only.&lt;/b&gt; These rendered Worldview RGB tiles established visibility but were not used in the calibrated GCOV comparison."><span>04</span>NISAR feasibility</button>
+        </div>
+      </div>
+
+      <div class="field-notes">
+        <article>
+          <p class="note-tag">FORMATIVE NULL</p>
+          <h3>Omkareshwar</h3>
+          <p>Storm-spanning Sentinel-1 estimates remained within the archived pilot’s non-event variability. Finite motion vectors were not labelled physical detections.</p>
+          <button class="evidence-open" data-modal-image="assets/research/omkareshwar_null_result.png" data-modal-title="Omkareshwar Sentinel-1 pilot">Inspect result</button>
+        </article>
+        <article>
+          <p class="note-tag">POSITIVE STRUCTURAL CHANGE</p>
+          <h3>Yamakura</h3>
+          <p>Damage-sector change exceeded quiet-pair limits in 6/6 orbit/polarization channels; whole-array translation exceeded them in 0/6.</p>
+          <button class="evidence-open" data-modal-image="assets/research/yamakura_structural_change_result.png" data-modal-title="Yamakura positive-event pilot">Inspect result</button>
+        </article>
+        <article>
+          <p class="note-tag">PRODUCT BOUNDARY</p>
+          <h3>NISAR Worldview</h3>
+          <p>The RGB screen returned no above-threshold motion, but rendered visualization pixels cannot validate native calibrated GCOV sensitivity.</p>
+          <button class="evidence-open" data-modal-image="assets/research/nisar_worldview_screen_result.png" data-modal-title="NISAR public-layer screen">Inspect result</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="chapter data-chapter" id="data">
+      <div class="section-index">03 / DATA DESIGN</div>
+      <div class="chapter-heading">
+        <p class="kicker">Geographic replication</p>
+        <h2>Three array geometries, one locked chronological design.</h2>
+      </div>
+      <div class="site-mask-grid">
+        <figure><img src="assets/research/piolenc_mask_controls.png" alt="Piolenc optical-derived array mask and stable controls"><figcaption><b>Piolenc · France</b><span>L 4/6 · C 181/129 calibration/test pairs</span></figcaption></figure>
+        <figure><img src="assets/research/sirindhorn_mask_controls.png" alt="Sirindhorn optical-derived array mask and stable controls"><figcaption><b>Sirindhorn · Thailand</b><span>L 3/3 · C 133/92 calibration/test pairs</span></figcaption></figure>
+        <figure><img src="assets/research/tengeh_mask_controls.png" alt="Tengeh optical-derived array mask and stable controls"><figcaption><b>Tengeh · Singapore</b><span>L 4/6 · C 68/49 calibration/test pairs</span></figcaption></figure>
+      </div>
+      <div class="split-diagram" aria-label="Chronological calibration and test split">
+        <div class="split-label"><span>Time</span><i></i></div>
+        <div class="split-block calibration"><b>60%</b><span>Calibration scenes</span><small>registration noise and thresholds only</small></div>
+        <div class="purge"><span>No shared scenes</span></div>
+        <div class="split-block test"><b>40%</b><span>Untouched test scenes</span><small>1–60 m synthetic injections only</small></div>
+      </div>
+      <dl class="data-audit">
+        <div><dt>1,377</dt><dd>prepared scene records</dd></div>
+        <div><dt>393</dt><dd>calibration pairs</dd></div>
+        <div><dt>285</dt><dd>test pairs</dd></div>
+        <div><dt>538,560</dt><dd>channel trials</dd></div>
+        <div><dt>269,280</dt><dd>consensus trials</dd></div>
+      </dl>
+    </section>
+
+    <section class="chapter method-chapter" id="method">
+      <div class="section-index">04 / ALGORITHM</div>
+      <div class="chapter-heading split-heading">
+        <div>
+          <p class="kicker">Controlled ground truth</p>
+          <h2>Move real array texture. Preserve real radar complexity.</h2>
+        </div>
+        <p>Instead of drawing a vector after inspecting change, the experiment asks the detector to recover a known vector embedded in real, independently held-out raster pairs.</p>
+      </div>
+      <figure class="injection-figure">
+        <img src="assets/research/injection_pipeline_real_raster.png" alt="Four-stage synthetic translation demonstration using a real Tengeh Sentinel-1 raster">
+        <figcaption>This reproducible figure calls the same `align_land`, `background_for`, `inject` and `ecc` functions as the benchmark. The displayed 40 m east injection was recovered as 30.1 m east and 0.4 m south with ECC 0.726—accepted, but visibly not perfect.</figcaption>
+      </figure>
+
+      <ol class="algorithm-steps">
+        <li><span>01</span><div><b>Normalize</b><p>Linear gamma-zero → dB; warp each mission to an explicit physical grid.</p></div></li>
+        <li><span>02</span><div><b>Register land</b><p>Bidirectional phase correlation estimates nuisance motion from four stable controls.</p></div></li>
+        <li><span>03</span><div><b>Inpaint</b><p>Remove the original optical-derived array footprint to prevent duplicate-object artefacts.</p></div></li>
+        <li><span>04</span><div><b>Inject</b><p>Translate real array pixels through 1–60 m × eight directions.</p></div></li>
+        <li><span>05</span><div><b>Recover</b><p>Masked high-pass ECC returns a vector and correlation coefficient.</p></div></li>
+        <li><span>06</span><div><b>Score</b><p>Require quality, calibration-only magnitude and ≤45° directional accuracy.</p></div></li>
+      </ol>
+
+      <div class="decision-rule">
+        <p class="mono">FROZEN RECOVERY RULE</p>
+        <div><span>accepted ECC</span><i>∧</i><span>‖v̂‖ &gt; q<sub>.95,cal</sub></span><i>∧</i><span>Δθ(v̂,v) ≤ 45°</span></div>
+        <p>Dual-pol adds: both channels alarm and their recovered directions agree within 45°.</p>
+      </div>
+    </section>
+
+    <section class="chapter results-chapter" id="results">
+      <div class="section-index">05 / RESULTS</div>
+      <div class="chapter-heading split-heading">
+        <div>
+          <p class="kicker">Primary harmonized 20 m analysis</p>
+          <h2>Pooled L-band curves cross the boundary earlier. Site evidence is less tidy.</h2>
+        </div>
+        <p>MD values are first tested magnitudes reaching the specified directionally correct recovery probability after isotonic fitting. Confidence intervals resample complete acquisition pairs.</p>
+      </div>
+
+      <div class="result-switch" role="group" aria-label="Choose detector result">
+        <button class="plot-button active" data-plot="copol" aria-pressed="true">Co-polarized</button>
+        <button class="plot-button" data-plot="dual" aria-pressed="false">Dual-pol consensus</button>
+      </div>
+      <div class="pooled-result">
+        <figure><img id="result-plot" src="assets/research/cross_sensor_copol_20m.png" alt="Pooled co-polarized detection curves and cross-sensor advantage"></figure>
+        <div class="md-table-wrap">
+          <table>
+            <thead><tr><th>Sensor</th><th>MD50</th><th>MD80</th><th>MD95</th></tr></thead>
+            <tbody id="pooled-values">
+              <tr class="l-row"><th>NISAR L</th><td>11 m<br><small>11–15</small></td><td>20 m<br><small>16–23</small></td><td>25 m<br><small>22–26</small></td></tr>
+              <tr class="c-row"><th>Sentinel-1 C</th><td>17 m<br><small>16–17</small></td><td>23 m<br><small>22–23</small></td><td>30 m<br><small>29–32</small></td></tr>
+            </tbody>
+          </table>
+          <p><small>Cells show point estimate and acquisition-pair clustered 95% interval.</small></p>
+        </div>
+      </div>
+
+      <div class="result-interpretation">
+        <article><span>+5 m</span><p>Co-pol pooled MD95 separation in favour of early NISAR.</p></article>
+        <article><span>+9 m</span><p>Dual-pol pooled MD95 separation in favour of early NISAR.</p></article>
+        <article class="caution"><span>18×</span><p>Sentinel-1 has 270 primary test pairs versus 15 for NISAR.</p></article>
+      </div>
+
+      <div class="site-results">
+        <div class="map-copy">
+          <p class="kicker">Interactive spatial comparison</p>
+          <h3>MD95 is a site property as much as a sensor property.</h3>
+          <p>Paired circles encode site-specific MD95 point estimates on a common scale. Click a site or switch detectors; open the evidence atlas for georeferenced rasters and regions of interest.</p>
+          <div class="map-detectors">
+            <button class="detector-button active" data-detector="dual" aria-pressed="true">Dual-pol</button>
+            <button class="detector-button" data-detector="copol" aria-pressed="false">Co-pol</button>
+          </div>
+          <div class="site-switcher" aria-label="Select study site">
+            <button type="button" data-site="Piolenc" class="active" aria-pressed="true">Piolenc</button>
+            <button type="button" data-site="Sirindhorn" aria-pressed="false">Sirindhorn</button>
+            <button type="button" data-site="Tengeh" aria-pressed="false">Tengeh</button>
+          </div>
+          <div class="selected-site">
+            <h4 id="site-name">Piolenc, France</h4>
+            <p id="site-context">6 NISAR and 129 Sentinel-1 held-out test pairs at 20 m.</p>
+            <div id="site-bars" class="site-bars" aria-label="Selected site MD50 MD80 and MD95 comparison"></div>
+            <p id="site-reading" class="site-reading"></p>
+          </div>
+        </div>
+        <div class="map-wrap"><div id="map" role="application" aria-label="Map comparing NISAR and Sentinel-1 MD95 point estimates"></div><div class="map-legend"><span><i class="l-swatch"></i>NISAR L</span><span><i class="c-swatch"></i>Sentinel-1 C</span></div><a class="atlas-map-link" href="atlas.html">Inspect georeferenced evidence</a></div>
+      </div>
+    </section>
+
+    <section class="chapter limits-chapter" id="limits">
+      <div class="section-index">06 / INTERPRETATION</div>
+      <div class="chapter-heading">
+        <p class="kicker">Claim discipline</p>
+        <h2>The most important output is the boundary around the conclusion.</h2>
+      </div>
+      <div class="claim-grid">
+        <article class="supported"><p>SUPPORTED</p><h3>Initial pooled 20 m NISAR boundaries are lower.</h3><span>True for both frozen detector variants in the available sample.</span></article>
+        <article class="supported"><p>SUPPORTED</p><h3>The result is strongly site dependent.</h3><span>Tengeh reverses the co-pol ranking and ties at dual-pol MD95.</span></article>
+        <article class="not-supported"><p>NOT ESTABLISHED</p><h3>L-band is universally superior for FPV motion.</h3><span>Three sites and 15 NISAR test pairs cannot support that generalization.</span></article>
+        <article class="not-supported"><p>NOT ESTABLISHED</p><h3>The method retrieves real engineering displacement.</h3><span>Synthetic persistence provides image-domain ground truth, not event metrology.</span></article>
+      </div>
+      <div class="power-warning">
+        <b>Power audit</b>
+        <p>All three NISAR site strata are marked <code>UNDERPOWERED</code> against the prespecified target of at least ten calibration and ten test pairs. Sentinel-1 strata meet that target. The limitation is stored in the data, not added as a footnote after seeing the curves.</p>
+      </div>
+    </section>
+
+    <section class="chapter reproduce-chapter" id="reproduce">
+      <div class="section-index">07 / REPRODUCIBILITY</div>
+      <div class="chapter-heading split-heading">
+        <div><p class="kicker">Inspect, rerun, challenge</p><h2>The portfolio ships the evidence trail.</h2></div>
+        <p>Provider-restricted raw imagery is not mirrored. The notebook retrieves it; selected small GeoTIFFs and all compact result tables are tracked for inspection.</p>
+      </div>
+      <div class="reproduce-grid">
+        <div class="file-tree mono" aria-label="Repository structure">
+          <span>├── analysis/ <i>figure + summary regeneration</i></span>
+          <span>├── config/ <i>frozen experiment JSON</i></span>
+          <span>├── data/derived/ <i>all compact result tables</i></span>
+          <span>├── notebooks/ <i>end-to-end Kaggle run</i></span>
+          <span>├── qgis/ <i>projects + selected GeoTIFFs</i></span>
+          <span>├── src/ <i>preparation + inference engine</i></span>
+          <span>└── tests/ <i>release-integrity checks</i></span>
+        </div>
+        <div class="download-list">
+          <a href="../RESEARCH_REPORT.md"><b>Research report</b><span>question, methods, results, discussion</span></a>
+          <a href="../QGIS_WORKFLOW.md"><b>QGIS laboratory</b><span>projects, raster calculator and interpretation</span></a>
+          <a href="../data/derived/md_boundaries.csv"><b>MD boundaries</b><span>pooled estimates and clustered intervals</span></a>
+          <a href="../data/derived/detection_curves.csv"><b>Detection curves</b><span>observed, isotonic and interval values</span></a>
+          <a href="../data/derived/site_md_summary.csv"><b>Site summary</b><span>data behind the spatial comparison</span></a>
+          <a href="../data/derived/power_audit.csv"><b>Power audit</b><span>independent pair-depth adequacy</span></a>
+          <a href="atlas.html"><b>Evidence atlas</b><span>raster stages, ROIs and injection vectors</span></a>
+        </div>
+      </div>
+      <div class="integrity-row"><span>Self-test <b>PASS</b></span><span>Vector error <b>0.0265 px</b></span><span>Bootstrap seed <b>20261002</b></span><span>Manifest <b>SHA-256</b></span></div>
+    </section>
+  </main>
+
+  <footer>
+    <p><b>FPV / SAR observability</b><br>Research portfolio · initial bounds · 2026</p>
+    <p>Built from tracked experiment outputs. No displayed numerical result was invented for presentation.</p>
+    <div><a href="#top">Back to top</a><a href="atlas.html">Evidence atlas</a><a href="../REFERENCES.md">References</a><a href="../DATA_LICENSE.md">Data terms</a></div>
+  </footer>
+
+  <dialog id="evidence-modal">
+    <button class="modal-close" aria-label="Close evidence viewer">Close</button>
+    <h2 id="modal-title"></h2>
+    <img id="modal-image" alt="">
+  </dialog>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

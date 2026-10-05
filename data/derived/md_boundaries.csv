@@ -1,0 +1,9 @@
+﻿sensor,regime,detector,pairs,MD50_m,MD50_ci95_lower_m,MD50_ci95_upper_m,MD80_m,MD80_ci95_lower_m,MD80_ci95_upper_m,MD95_m,MD95_ci95_lower_m,MD95_ci95_upper_m
+NISAR_L,harmonized_20m,copol,15,11,11.0,15.0,20,16.0,23.0,25,22.0,26.0
+NISAR_L,harmonized_20m,dualpol_consensus,15,14,12.0,17.0,21,18.0,26.0,27,23.0,32.0
+NISAR_L,matched_10m,copol,6,5,4.0,6.0,8,6.0,10.0,not_reached,61.0,>60
+NISAR_L,matched_10m,dualpol_consensus,6,6,5.0,6.0,8,8.0,9.0,not_reached,61.0,>60
+S1_C,harmonized_20m,copol,270,17,16.0,17.0,23,22.0,23.0,30,29.0,32.0
+S1_C,harmonized_20m,dualpol_consensus,270,20,20.0,21.0,27,26.0,28.0,36,34.0,38.0
+S1_C,matched_10m,copol,270,9,8.0,9.0,12,12.0,12.0,15,15.0,17.0
+S1_C,matched_10m,dualpol_consensus,270,11,10.0,11.0,14,14.0,15.0,20,19.0,21.0

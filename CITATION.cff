@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software or benchmark, please cite this repository."
+title: "Initial Cross-Sensor Observability Bounds for Floating Photovoltaic Motion"
+type: software
+authors:
+  - family-names: "YOUR_FAMILY_NAME"
+    given-names: "YOUR_GIVEN_NAME"
+repository-code: "https://github.com/USERNAME/fpv-cross-sensor-observability"
+version: 0.5.0
+date-released: 2026-10-05
+license: MIT
+keywords:
+  - synthetic aperture radar
+  - floating photovoltaics
+  - NISAR
+  - Sentinel-1
+  - displacement detection
+  - remote sensing

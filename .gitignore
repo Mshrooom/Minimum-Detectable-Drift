@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+*.tif
+*.tiff
+!qgis/rasters/*.tif
+*.h5
+*.hdf5
+data/raw/
+data/interim/
+results/full_trials/
+cross_sensor_fpv_results*/
+tmp/

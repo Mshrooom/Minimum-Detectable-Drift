@@ -1,0 +1,56 @@
+{
+  "experiment_name": "FPV C-band Sentinel-1 versus L-band NISAR observability benchmark",
+  "date_end": "2026-10-01",
+  "sentinel1_date_start": "2017-01-01",
+  "nisar_date_start": "2026-06-17",
+  "calibration_fraction": 0.60,
+  "threshold_quantile": 0.95,
+  "minimum_site_calibration_pairs": 3,
+  "minimum_site_test_pairs": 2,
+  "minimum_publishable_calibration_pairs": 10,
+  "minimum_publishable_test_pairs": 10,
+  "magnitudes_m": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60],
+  "directions_deg": [0, 45, 90, 135, 180, 225, 270, 315],
+  "bootstrap_iterations": 5000,
+  "bootstrap_seed": 20261002,
+  "direction_tolerance_deg": 45.0,
+  "polarization_agreement_deg": 45.0,
+  "minimum_ecc_coefficient": 0.40,
+  "maximum_shift_m": 75.0,
+  "tracking_mask_expansion_m": 40.0,
+  "tracking_padding_m": 120.0,
+  "inpaint_radius_m": 70.0,
+  "stable_control_fractional_boxes": [
+    [0.02, 0.02, 0.30, 0.30],
+    [0.70, 0.02, 0.98, 0.30],
+    [0.02, 0.70, 0.30, 0.98],
+    [0.70, 0.70, 0.98, 0.98]
+  ],
+  "analysis_regimes": {
+    "matched_10m": {
+      "target_resolution_m": 10.0,
+      "maximum_source_pixel_m": 12.5
+    },
+    "harmonized_20m": {
+      "target_resolution_m": 20.0,
+      "maximum_source_pixel_m": 25.0
+    }
+  },
+  "sites": {
+    "tengeh": {
+      "bbox": [103.6295, 1.3395, 103.6565, 1.3605],
+      "mask_filename": "tengeh_fpv_mask.tif",
+      "sentinel1_stable_start": "2022-01-01"
+    },
+    "piolenc": {
+      "bbox": [4.7180, 44.1480, 4.7380, 44.1630],
+      "mask_filename": "piolenc_fpv_mask.tif",
+      "sentinel1_stable_start": "2023-01-01"
+    },
+    "sirindhorn": {
+      "bbox": [105.4300, 15.1870, 105.4580, 15.2090],
+      "mask_filename": "sirindhorn_fpv_mask.tif",
+      "sentinel1_stable_start": "2022-01-01"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "scene": "fpv_earth_observatory.blend",
+  "catalogued": 643,
+  "geolocated_rendered": 517,
+  "timeline_frames": [
+    1,
+    360
+  ],
+  "event_semantics": {
+    "Yamakura": "localized structural change; no resolved rigid translation",
+    "Omkareshwar": "below detection; not zero motion",
+    "Tengeh": "40 m controlled synthetic eastward injection; display 15000x exaggerated"
+  },
+  "coordinate_transform": "WGS84 lon/lat to geocentric sphere"
+}

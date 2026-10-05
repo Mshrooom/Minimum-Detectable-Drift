@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Interactive 3D research explorer for the global floating-photovoltaic catalogue, SAR observability experiments and documented event evidence.">
+  <title>FPV Earth Observatory</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%2304080b' stroke='%232fe0d0' stroke-width='3'/%3E%3Cpath d='M8 32h48M32 5c10 8 14 17 14 27S42 51 32 59M32 5C22 13 18 22 18 32s4 19 14 27' fill='none' stroke='%235c7c86' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="vendor/maplibre-gl/maplibre-gl.css">
+  <link rel="stylesheet" href="assets/earth.css">
+</head>
+<body>
+  <div id="loading-overlay"><div class="loader-orbit"><i></i><i></i><i></i></div><b>Assembling FPV Earth</b><span>catalogue · observability · event evidence</span></div>
+  <main id="app">
+    <div id="earth-map" role="application" aria-label="Interactive 3D globe of floating photovoltaic records"></div>
+    <header class="top-toolbar">
+      <a class="identity" href="index.html" aria-label="FPV Earth home"><i></i><span><b>FPV EARTH</b><small>OBSERVATORY</small></span></a>
+      <div class="kpis" aria-label="Catalogue summary">
+        <button type="button" id="kpi-records"><strong id="catalogue-kpi">643</strong><span>catalogued</span></button>
+        <button type="button" id="kpi-mappable"><strong id="mapped-kpi">517</strong><span>geolocated</span></button>
+        <button type="button" id="kpi-countries"><strong id="country-kpi">28</strong><span>countries</span></button>
+      </div>
+      <div class="mode-tabs" role="tablist" aria-label="Explorer mode">
+        <button type="button" data-mode="inventory" class="active" aria-selected="true">Inventory</button>
+        <button type="button" data-mode="laboratory" aria-selected="false">Motion lab</button>
+        <button type="button" data-mode="evidence" aria-selected="false">Calamity evidence</button>
+      </div>
+      <label class="global-search"><span>⌕</span><input id="global-search" type="search" placeholder="Country or FPV ID" autocomplete="off"></label>
+      <nav><a href="paper.html">Paper</a><a href="atlas.html">Rasters</a><a href="../README.md">Code</a></nav>
+    </header>
+    <section id="active-filters" aria-label="Active filters"></section>
+    <aside id="dashboard" aria-label="Research dashboard">
+      <button type="button" id="dashboard-toggle" aria-label="Toggle dashboard">›</button>
+      <section><header><span>Distribution</span><b id="dash-subtitle">mappable installations</b></header><div id="continent-bars" class="bar-list"></div></section>
+      <section><header><span>Top countries</span><b>click to inspect</b></header><div id="country-bars" class="bar-list interactive"></div></section>
+      <section><header><span>Timeline</span><b>catalogue records by year</b></header><canvas id="timeline-chart" width="290" height="78" aria-label="FPV catalogue timeline"></canvas></section>
+      <section id="science-panel"><header><span>SAR observability</span><b>harmonized 20 m grid</b></header><div class="science-row"><i class="swatch lband"></i><span>NISAR L · co-pol</span><strong>MD95 25 m</strong></div><div class="science-row"><i class="swatch cband"></i><span>Sentinel-1 C · co-pol</span><strong>MD95 30 m</strong></div><p>Initial bounds, not a universal mission ranking.</p></section>
+      <section id="blender-panel"><header><span>Blender scene</span><b>WGS84 · 360 frames</b></header><a href="assets/blender/fpv_globe_preview.png" target="_blank"><img src="assets/blender/fpv_globe_preview.png" alt="Rendered Blender FPV Earth globe"></a><p>Editable `.blend` + animated GLB; event semantics are embedded as metadata.</p></section>
+    </aside>
+    <aside id="catalogue-drawer" class="drawer" aria-label="FPV catalogue records">
+      <button type="button" class="drawer-close" data-close="catalogue-drawer" aria-label="Close catalogue">×</button>
+      <div class="drawer-head"><p>GLOBAL CATALOGUE</p><h1 id="drawer-title">All installations</h1><div id="drawer-meta">643 records · 517 geolocated</div></div>
+      <label class="drawer-search"><span>⌕</span><input id="drawer-search" type="search" placeholder="Filter records" autocomplete="off"></label>
+      <div id="record-list" class="record-list"></div>
+    </aside>
+    <aside id="record-inspector" class="inspector" aria-label="Selected floating photovoltaic record" hidden>
+      <button type="button" class="drawer-close" id="close-inspector" aria-label="Close record">×</button>
+      <p id="record-eyebrow">CATALOGUE RECORD</p><h2 id="record-title">FPV record</h2><dl id="record-values"></dl>
+      <section class="eo-card">
+        <header><span>LIVE EO LOOKUP</span><b>Sentinel-2 L2A</b></header>
+        <div class="eo-date"><label for="eo-target-date">Nearest scene to</label><input id="eo-target-date" type="date"><button id="eo-refresh" type="button">Fetch</button></div>
+        <div id="eo-status">Select a geolocated record to query current EO metadata.</div>
+        <div class="eo-frame"><img id="eo-image" alt="Nearest Sentinel-2 Earth observation" hidden><div id="eo-placeholder">10 m true-colour crop appears here</div><span id="eo-crosshair" hidden></span></div>
+        <div id="eo-meta"></div>
+      </section>
+      <p class="claim-note">Nearest available acquisition—not a real-time camera and not evidence of motion by itself.</p>
+    </aside>
+    <aside id="lab-panel" class="work-panel" hidden>
+      <header><p>CONTROLLED MOTION LAB</p><h2>Interrogate the detector</h2></header>
+      <div class="segmented" id="site-tabs"></div>
+      <div class="lab-grid"><div><label>Sensor</label><div class="segmented"><button data-sensor="L" class="active">NISAR L</button><button data-sensor="C">Sentinel-1 C</button></div></div><div><label>Detector</label><div class="segmented"><button data-detector="copol" class="active">Co-pol</button><button data-detector="dual">Dual-pol</button></div></div></div>
+      <label class="range-row" for="magnitude-slider"><span>Synthetic translation <output id="magnitude-output">40 m</output></span><input id="magnitude-slider" type="range" min="0" max="60" value="40" step="1"></label>
+      <label class="select-row" for="direction-select"><span>Direction</span><select id="direction-select"><option value="0">East · 0°</option><option value="45">North-east · 45°</option><option value="90">North · 90°</option><option value="135">North-west · 135°</option><option value="180">West · 180°</option><option value="225">South-west · 225°</option><option value="270">South · 270°</option><option value="315">South-east · 315°</option></select></label>
+      <div class="lab-results"><div><span>Recovery probability</span><strong id="probability-readout">—</strong><small id="probability-ci">—</small></div><div><span>Site MD50 / 80 / 95</span><strong id="boundary-readout">—</strong><small id="boundary-status">—</small></div></div>
+      <button type="button" id="validated-replay" class="primary-action">Replay validated Tengeh 40 m test</button>
+      <div class="motion-key"><span><i class="original"></i>optical footprint</span><span><i class="injected"></i>synthetic position</span><span><i class="recovered"></i>recovered vector</span></div>
+    </aside>
+    <aside id="event-panel" class="work-panel" hidden>
+      <header><p>DOCUMENTED CALAMITY AUDIT</p><h2>Change, displacement or unresolved?</h2></header>
+      <div id="event-list" class="event-list"></div>
+      <article id="event-detail" hidden><div class="event-status"><span id="event-classification">—</span><b id="event-translation">—</b></div><p id="event-description"></p><div class="event-timeline"><i></i><div><span id="event-pre-date">—</span><b>pre</b></div><div><span id="event-post-date">—</span><b>post</b></div></div><div class="event-player"><button type="button" id="event-play">▶ Animate evidence</button><span id="event-phase">registered change</span></div><div id="event-images" class="event-images"></div><button type="button" id="event-eo" class="primary-action">Fetch nearest optical scene to event</button><a href="atlas.html" class="evidence-link">Open full georeferenced raster evidence →</a></article>
+      <p class="claim-note">A documented calamity does not guarantee recoverable rigid translation. Localized structural change and below-threshold motion remain valid outcomes.</p>
+    </aside>
+    <div id="layer-pills" aria-label="Map layers"><button type="button" data-layer="columns" class="active"><i class="cyan"></i>3D country columns</button><button type="button" data-layer="points" class="active"><i class="mint"></i>FPV records</button><button type="button" data-layer="benchmarks" class="active"><i class="amber"></i>SAR sites</button><button type="button" data-layer="events"><i class="red"></i>event cases</button></div>
+    <button id="spin-toggle" type="button" aria-label="Pause globe rotation">Ⅱ</button><button id="home-view" type="button" aria-label="Reset global view">⌂</button>
+    <section id="time-control" aria-label="Catalogue time filter"><div class="time-head"><span>CATALOGUE THROUGH</span><output id="year-output">2023</output></div><input id="year-slider" type="range" min="2007" max="2023" value="2023" step="1"><div class="time-labels"><span>2007</span><button id="play-years" type="button">▶ Play expansion</button><span>2023</span></div><label><input type="checkbox" id="show-unknown" checked> include undated</label></section>
+    <footer class="claim-bar"><span id="view-status">GLOBAL INVENTORY</span><b id="claim-copy">643 installations surveyed through April 2023; not a live global census.</b><span id="source-status">Nobre et al. · DOI 10.1016/j.solener.2023.112244</span></footer>
+    <section id="welcome" class="welcome" role="dialog" aria-modal="true" aria-labelledby="welcome-title"><button type="button" id="welcome-close" aria-label="Close introduction">×</button><p>REMOTE-SENSING RESEARCH EXPLORER</p><h1 id="welcome-title">FPV Earth<br><em>Observatory</em></h1><p>Explore a 643-record floating-photovoltaic survey, interrogate calibrated L/C-band displacement limits, and inspect documented calamity evidence without confusing synthetic motion with real drift.</p><div class="welcome-stats"><div><strong>643</strong><span>catalogued</span></div><div><strong>517</strong><span>mapped</span></div><div><strong>807,840</strong><span>SAR trials</span></div></div><button type="button" id="enter-observatory" class="primary-action">Enter the observatory</button><small>Survey snapshot through April 2023. The live EO panel queries the nearest available Sentinel-2 acquisition on demand.</small></section>
+  </main>
+  <script src="vendor/maplibre-gl/maplibre-gl.js"></script><script src="assets/earth-data.js"></script><script src="assets/atlas-data.js"></script><script src="assets/earth.js"></script>
+</body>
+</html>

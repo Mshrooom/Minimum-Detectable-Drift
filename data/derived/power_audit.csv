@@ -1,0 +1,7 @@
+﻿sensor,site,calibration_pairs,test_pairs,publishable_calibration_target,publishable_test_target,status
+NISAR_L,piolenc,4,6,10,10,UNDERPOWERED
+NISAR_L,sirindhorn,3,3,10,10,UNDERPOWERED
+NISAR_L,tengeh,4,6,10,10,UNDERPOWERED
+S1_C,piolenc,181,129,10,10,ADEQUATE
+S1_C,sirindhorn,133,92,10,10,ADEQUATE
+S1_C,tengeh,68,49,10,10,ADEQUATE

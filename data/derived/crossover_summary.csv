@@ -1,0 +1,9 @@
+﻿comparison,regime,detector,s1_pairs,nisar_pairs,supported_crossover_m
+all_available,harmonized_20m,copol,270,15,1
+all_available,harmonized_20m,dualpol_consensus,270,15,4
+all_available,matched_10m,copol,270,6,1
+all_available,matched_10m,dualpol_consensus,270,6,2
+matched_pair_depth,harmonized_20m,copol,15,15,2
+matched_pair_depth,harmonized_20m,dualpol_consensus,15,15,4
+matched_pair_depth,matched_10m,copol,6,6,none_through_60m
+matched_pair_depth,matched_10m,dualpol_consensus,6,6,2
