@@ -1,88 +1,63 @@
-# Initial Cross-Sensor Observability Bounds for Floating Photovoltaic Motion
+# Minimum Detectable Drift
 
-### A comparative sensitivity study of early NISAR L-band and historical Sentinel-1 C-band SAR
+### Initial cross-sensor observability bounds for floating photovoltaic motion in NISAR L-band and Sentinel-1 C-band SAR
 
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![QGIS](https://img.shields.io/badge/QGIS-reproducible%20raster%20lab-589632?logo=qgis&logoColor=white)](QGIS_WORKFLOW.md)
-[![Experiment](https://img.shields.io/badge/design-acquisition--disjoint-137B80)](METHODS.md)
-[![Status](https://img.shields.io/badge/status-initial%20bounds-F0A34A)](#what-the-project-establishes)
+[![Design](https://img.shields.io/badge/design-acquisition--disjoint-137B80)](METHODS.md)
+[![Status](https://img.shields.io/badge/status-initial%20bounds-F0A34A)](#what-this-is-and-is-not)
 
-> **Research question:** after forcing early NISAR L-band GCOV and historical
-> Sentinel-1 C-band RTC observations onto the same spatial grids and applying
-> one frozen detector, how much persistent floating-photovoltaic translation is
-> required before its direction is recovered reliably?
+> **Research question:** after forcing early NISAR L-band GCOV and historical Sentinel-1 C-band RTC observations onto the same spatial grids and applying one frozen detector, how much persistent floating-photovoltaic (FPV) translation is required before its direction is recovered reliably?
 
-This repository is a complete research portfolio rather than a publication
-claim. It contains the theory, QGIS exploration, tracked raster examples,
-synthetic-injection algorithm, acquisition-disjoint experiment, uncertainty
-analysis, negative results, and an explicit audit of what the current sample
-cannot establish.
+**TL;DR:** I wanted to know whether radar can see a floating solar array move. I ended up measuring something more useful: how far an array has to move before a given sensor and detector can recover which way it went. At a 20 m grid, the pooled 95% boundary was about **25 m for early NISAR L-band** and **30 m for Sentinel-1 C-band** (co-polarized). The NISAR sample is small (15 test pairs vs 270), so these are **initial bounds, not a mission ranking**.
 
-**[Open FPV Earth—the 3D global observatory →](docs/index.html)** · **[Open the georeferenced raster atlas →](docs/atlas.html)** · **[Read the complete research paper →](docs/paper.html)**
-
-FPV Earth combines the complete 643-record peer-reviewed Nobre et al. global
-survey (517 coordinate-mappable installations in 28 countries) with the three
-sites where this repository actually calibrates SAR displacement sensitivity.
-Its time control reconstructs the catalogue through 2023; its 3D motion lab
-translates the real optical-derived footprints and reads exact pooled recovery
-probabilities and site MD50/80/95 values. It never labels synthetic motion as
-observed physical drift. Selecting a mapped record can query the nearest
-Sentinel-2 L2A acquisition through the public Planetary Computer STAC catalogue;
-that is an on-demand acquisition lookup, not a real-time camera. The calamity
-mode animates the registered pre/post/change evidence while preserving each
-event's actual outcome. The raster atlas remains the pixel-level audit surface.
-
-An editable Blender companion is included in [`blender/`](blender/). Its WGS84
-scene contains the 517 mapped records, country-density extrusions, a 360-frame
-Earth rig and evidence-aware event markers. Yamakura is animated as localized
-change, Omkareshwar as below detection, and Tengeh as a clearly labelled 40 m
-controlled synthetic replay (15,000× visual exaggeration at globe scale). The
-generated `.blend`, animated GLB, preview and semantic manifest are all tracked.
-
-![Blender WGS84 globe built from the 517 geolocated FPV records](docs/assets/blender/fpv_globe_preview.png)
+**[Open FPV Earth, the 3D observatory →](https://YOUR-USERNAME.github.io/fpv-cross-sensor-observability/)** · **[Open the raster atlas →](https://YOUR-USERNAME.github.io/fpv-cross-sensor-observability/atlas.html)** · **[Read the technical report →](https://YOUR-USERNAME.github.io/fpv-cross-sensor-observability/paper.html)**
 
 ![Controlled translation on a real Tengeh Sentinel-1 raster](docs/assets/research/injection_pipeline_real_raster.png)
 
+---
+
+## The story in one minute
+
+My first plan was a paper on whether SAR can detect motion in floating PV fields. These arrays are rows of near-identical modules on water, so a shift measured between two dates can look convincing and still be wrong: speckle, viewing geometry, reservoir conditions and imperfect georegistration can all move the apparent correlation peak.
+
+I started by hand in QGIS:
+
+- **Omkareshwar.** Fifteen Sentinel-1 scenes from two relative orbits bracketed the April 2024 storm. The event vectors stayed inside the limits of ordinary non-event pairs, so no storm displacement could be claimed.
+- **Yamakura.** Seventy-eight dual-polarization Sentinel-1 scenes covered three relative orbits around Typhoon Faxai. The documented damage sector exceeded every matched quiet-pair structural-change limit (6/6 channels), while the stable sector gave 0/6 and whole-array translation gave 0/6. The radar saw localized structural change, but no coherent translation I could resolve.
+
+![Yamakura structural change and unresolved rigid translation](docs/assets/research/yamakura_structural_change_result.png)
+
+Those two cases changed the question from *"did this array move?"* to ***"how far must an array move before this sensor-detector system can resolve it?"*** The evidence wasn't strong enough for a paper, so I turned it into a reproducible benchmark with its limits visible.
+
+---
+
 ## Abstract
 
-Floating photovoltaic (FPV) fields are structurally repetitive targets whose
-apparent motion in SAR amplitude imagery is easily confounded by speckle,
-viewing geometry and registration error. I tested whether radar wavelength
-changes the practical observability boundary for persistent rigid translation.
-Optical-derived FPV masks at Piolenc, Sirindhorn and Tengeh were combined with
-NISAR L-band GCOV and Sentinel-1 C-band RTC rasters. Temporal pairs were split
-chronologically into calibration (60%) and untouched test (40%) blocks without
-sharing acquisitions. Stable land estimated registration nuisance motion.
-Known translations of 1–60 m were injected in eight directions after the
-original footprint was inpainted, and masked ECC recovered each vector.
+Optical-derived FPV masks at Piolenc (France), Sirindhorn (Thailand) and Tengeh (Singapore) were combined with NISAR L-band GCOV and Sentinel-1 C-band RTC rasters. Temporal pairs were split chronologically into calibration (60%) and untouched test (40%) blocks, with no acquisition shared across them. Stable land estimated registration nuisance motion. After the original footprint was inpainted, known translations of 1 to 60 m were injected in eight directions and masked ECC alignment recovered each vector.
 
-At the primary 20 m grid, pooled co-polarized MD50/80/95 values were
-**11/20/25 m for NISAR** and **17/23/30 m for Sentinel-1**. Dual-polarization
-consensus gave **14/21/27 m** and **20/27/36 m**, respectively. The apparent
-L-band advantage was not universal: Tengeh favoured Sentinel-1 in the co-pol
-analysis and tied at dual-pol MD95. Most importantly, NISAR contributed only 15
-test pairs versus 270 Sentinel-1 pairs. These are therefore **initial
-observability bounds**, not a mission ranking.
+At the primary 20 m grid, pooled co-polarized MD50/80/95 values were **11/20/25 m for NISAR** and **17/23/30 m for Sentinel-1**. Dual-polarization consensus gave **14/21/27 m** and **20/27/36 m**. The apparent L-band advantage was not universal: Tengeh favoured Sentinel-1 in the co-pol analysis and tied at dual-pol MD95. NISAR contributed only 15 test pairs against 270 for Sentinel-1.
 
-## Theory tested
+---
 
-NISAR L-band operates at a 24 cm wavelength, while Sentinel-1 is a C-band
-system. The working hypothesis was that a longer-wavelength structural
-backscatter pattern might remain sufficiently persistent across dates to lower
-the translation required for directional recovery. The counter-hypothesis was
-that spatial resolution, array morphology, local background and temporal scene
-quality dominate wavelength.
+## Hypothesis and its rival
 
-The result supports neither extreme. Pooled curves favour L-band, but the
-site-level reversal at Tengeh shows that **band is only one term in an
-observability system**.
+NISAR L-band has a wavelength of about 24 cm. The working hypothesis was that its longer-wavelength response might stay more persistent across FPV dates than C-band, lowering the translation-detection boundary when pixel spacing and the detector are held fixed.
 
-## Experimental evidence
+The rival hypothesis was that wavelength matters less than source spacing, array morphology, viewing geometry, local clutter and pair quality. It predicts mixed site-level results even when pooled curves separate.
 
-| Primary 20 m detector | NISAR L MD50 / MD80 / MD95 | Sentinel-1 C MD50 / MD80 / MD95 |
+The results support neither extreme: pooled curves lean toward L-band, but the Tengeh reversal shows that **band is one term in an observability system**.
+
+---
+
+## Results
+
+| Primary 20 m detector | NISAR L (MD50 / 80 / 95) | Sentinel-1 C (MD50 / 80 / 95) |
 |---|---:|---:|
 | Co-polarized | **11 / 20 / 25 m** | **17 / 23 / 30 m** |
 | Dual-pol consensus | **14 / 21 / 27 m** | **20 / 27 / 36 m** |
+
+`MDxx` is the first injected displacement where the monotonic fitted curve reaches `xx%` directionally correct recovery. Pooled NISAR MD95 95% intervals are 22 to 26 m (co-pol) and 23 to 32 m (dual-pol). Values reported as `not_reached` are never extrapolated beyond the tested 60 m range.
 
 | Site | Test pairs L / C | Co-pol MD95 L / C | Dual-pol MD95 L / C |
 |---|---:|---:|---:|
@@ -90,76 +65,95 @@ observability system**.
 | Sirindhorn, Thailand | 3 / 92 | **24 / 30 m** | **25 / 30 m** |
 | Tengeh, Singapore | 6 / 49 | **25 / 21 m** | **32 / 32 m** |
 
-Site results are point estimates only. The pooled NISAR MD95 95% intervals are
-22–26 m (co-pol) and 23–32 m (dual-pol); all three NISAR site strata fail the
-prespecified independent-pair adequacy target.
+Site results are point estimates only, and all three NISAR site strata fail the prespecified independent-pair adequacy target of 10 test pairs (see `data/derived/power_audit.csv`).
 
 <p align="center">
   <img src="docs/assets/research/cross_sensor_copol_20m.png" width="49%" alt="Pooled co-polarized L and C band detection curves">
   <img src="docs/assets/research/cross_sensor_dual_20m.png" width="49%" alt="Pooled dual-polarization L and C band detection curves">
 </p>
 
-## From QGIS observation to controlled benchmark
+**The exploratory 10 m regime.** Sentinel-1 reached co-pol MD95 at 15 m and dual-pol MD95 at 20 m. The NISAR subset reached MD50/MD80 at 5/8 m (co-pol) and 6/8 m (dual-pol), but MD95 was not reached through 60 m. Only six pairs from one site met the 10 m source-spacing rule, so this is a sampling warning, not evidence that L-band fails.
 
-The project began with manual multi-date raster inspection in QGIS. At
-Omkareshwar, storm-spanning Sentinel-1 vectors stayed inside ordinary
-stable-control variability. At Yamakura, the documented Typhoon Faxai failure
-produced repeatable localized structural change in 6/6 orbit/polarization
-channels, but whole-array translation remained below its quiet-pair thresholds.
-Those two cases motivated a better question: **not “did this array move?” but
-“how far must an array move before this sensor-detector system can resolve it?”**
+![Matched 10 m co-polarized curves](results/figures/matched_10m_copol.png)
 
-![Yamakura structural change and unresolved rigid translation](docs/assets/research/yamakura_structural_change_result.png)
+---
 
-The tracked QGIS package includes two editable `.qgz` projects, real pre-event,
-post-event and difference GeoTIFFs, three optical-derived FPV mask rasters, a
-representative Sentinel-1 VV/VH temporal pair, and one NISAR Worldview RGB
-GeoTIFF labelled visualization-only. See [QGIS_WORKFLOW.md](QGIS_WORKFLOW.md)
-and [`qgis/`](qgis/).
+## Method
 
-## Frozen algorithm
+1. **Lock the split first.** Pairs are ordered chronologically within each sensor, site and geometry. The earliest 60% calibrate thresholds and the later 40% form the test block. The preparation audit shows 678 unique pairs (393 calibration, 285 test) and an empty cross-split overlap list.
+2. **Common grids.** Two regimes were defined before inference: `matched_10m` (source spacing no coarser than 12.5 m, resampled to 10 m) and `harmonized_20m` (no coarser than 25 m, resampled to 20 m). The 20 m regime is primary because it retains all three NISAR sites.
+3. **Cancel registration drift.** Four stable-land control boxes at fixed positions are converted to dB, high-pass filtered and registered with bidirectional phase correlation. The median accepted control shift is removed from the comparison raster.
+4. **Controlled translation.** Real array pixels are selected by the optical mask, the footprint is inpainted (Telea), and the pixels are translated by every integer metre from 1 to 60 m in eight directions (0°, 45°, up to 315°). Ground truth is exact, while speckle, geometry and clutter stay real.
+5. **Frozen detector.** Masked, high-pass ECC alignment recovers the shift. A recovery requires accepted registration and ECC quality, a magnitude above a calibration-only 95th-percentile threshold, and angular error of 45° or less. The dual-pol consensus detector requires both channels to alarm and agree within 45°.
+6. **Uncertainty.** Recovery curves are made monotonic with weighted isotonic regression. Intervals come from 5,000 bootstrap iterations that resample whole acquisition pairs, preserving the dependence among the eight directions from one pair.
 
-1. Convert linear gamma-zero amplitude to decibels.
-2. Resample both sensors to an explicit 10 m or 20 m grid.
-3. Estimate pair-specific translation from four stable-land controls.
-4. Warp the comparison raster to remove median land motion.
-5. Inpaint the original optical-derived FPV footprint.
-6. Translate the real array pixels by 1–60 m in eight directions.
-7. Recover translation with masked, high-pass ECC.
-8. Require accepted ECC quality, magnitude above the calibration-only 95th
-   percentile and angular error ≤45°.
-9. For dual-pol consensus, require both channels to alarm and agree within 45°.
-10. Fit monotonic recovery curves and bootstrap complete acquisition pairs.
+Implementation: [`src/cross_sensor_inference.py`](src/cross_sensor_inference.py). Full methods: [METHODS.md](METHODS.md) and [RESEARCH_REPORT.md](RESEARCH_REPORT.md).
 
-The implementation is in [`src/cross_sensor_inference.py`](src/cross_sensor_inference.py).
+---
 
-## What the project establishes
+## What this is and is not
 
-- A complete, auditable method for estimating **sensor–site–algorithm
-  observability bounds** rather than interpreting one apparent vector.
-- Lower preliminary pooled 20 m bounds for the available early NISAR L-band
-  sample under the frozen detector.
-- Strong site dependence that rejects a universal wavelength-only explanation.
-- A reusable benchmark architecture that reports `not_reached` instead of
-  extrapolating beyond the tested range.
+**It is:**
+- A method for estimating sensor-site-algorithm observability bounds, instead of interpreting one apparent vector.
+- Preliminary pooled 20 m bounds for the available early NISAR sample under one frozen detector.
+- Evidence that site dependence rejects a universal wavelength-only explanation.
+- A reusable benchmark that reports `not_reached` instead of extrapolating.
 
-It does **not** establish universal L-band superiority, centimetric physical
-motion, or operational event detection. Synthetic persistence is controlled
-ground truth; it is not a substitute for documented engineering displacement.
+**It is not:**
+- Evidence that a real installation moved. The translations are synthetic and injected.
+- A universal ranking of L-band against C-band.
+- A measurement of centimetric phase displacement, or operational event detection.
+
+### Limitations
+
+1. NISAR provides 15 primary test pairs, against 270 for Sentinel-1.
+2. NISAR site calibration blocks hold only three or four pairs each.
+3. Rigid synthetic translation does not reproduce rotation, fracture, partial-block motion or changing reservoir interaction.
+4. Amplitude tracking does not estimate centimetric phase displacement.
+5. Masks are optical-derived approximations of array support.
+6. Three sites are insufficient for global generalization.
+7. No documented real event provides metre-accurate ground truth to validate the cross-sensor ranking.
+
+---
 
 ## Audit trail
 
-- 1,377 prepared scene records.
-- 678 unique temporal pairs.
-- 393 calibration and 285 test pairs.
-- zero calibration/test scene overlap.
-- 538,560 channel trials and 269,280 dual-pol consensus trials.
-- 5,000 acquisition-pair clustered bootstrap iterations.
-- automated self-test error: 0.0265 px.
+- 1,377 prepared scene records
+- 678 unique temporal pairs (393 calibration, 285 test)
+- zero calibration/test scene overlap
+- 538,560 channel trials and 269,280 dual-pol consensus trials
+- 5,000 acquisition-pair clustered bootstrap iterations
+- automated self-test error of 0.0265 px
 
-Every compact reported result is under [`data/derived/`](data/derived/). The
-large trial-level tables are regenerated by the Kaggle notebook and excluded
-from Git history. File hashes are recorded in [`provenance/`](provenance/).
+Every compact reported result is under [`data/derived/`](data/derived/) (data dictionary in [`data/derived/README.md`](data/derived/README.md)). The large trial-level tables are regenerated by the Kaggle notebook and excluded from Git. File hashes are in [`provenance/`](provenance/).
+
+`tests/validate_release.py` checks that the released tables and counts are consistent with each other. It does not test whether the detector is scientifically correct.
+
+---
+
+## From QGIS observation to controlled benchmark
+
+The tracked QGIS package contains two editable `.qgz` projects, real pre-event, post-event and difference GeoTIFFs, FPV mask rasters, a representative Sentinel-1 VV/VH temporal pair and one NISAR Worldview RGB GeoTIFF (visualization only, not a calibrated input). See [QGIS_WORKFLOW.md](QGIS_WORKFLOW.md).
+
+![QGIS raster calculator workflow](docs/assets/research/qgis_raster_calculator.png)
+
+---
+
+## Extras: FPV Earth and the Blender scene
+
+**FPV Earth** is an interactive 3D observatory that keeps three evidence levels separate:
+
+1. **Global catalogue.** All 643 records from the Nobre et al. (2024) survey (through April 2023). Usable coordinates exist for 517; the other 126 are counted but cannot be placed as points.
+2. **SAR-calibrated benchmark.** Piolenc, Sirindhorn and Tengeh, where this repository measures displacement sensitivity.
+3. **Event audits.** Yamakura and Omkareshwar, where change was inspected but metre-accurate displacement is unavailable.
+
+The globe is global in catalogue coverage, not in motion inference. It does not imply that all installations are monitored, moving or current. Selecting a mapped record can query the nearest Sentinel-2 L2A acquisition through the public Planetary Computer STAC catalogue; that is an on-demand lookup, not a live camera.
+
+An editable **Blender** scene in [`blender/`](blender/) contains the 517 mapped records, country-density columns, a 360-frame Earth rig and evidence-aware markers. Yamakura pulses as localized change, Omkareshwar as below detection, and only Tengeh is translated, replaying a controlled 40 m synthetic injection exaggerated 15,000x so it is visible at globe scale. These animations must never be relabelled as observed global FPV drift.
+
+![Blender WGS84 globe built from the 517 geolocated FPV records](docs/assets/blender/fpv_globe_preview.png)
+
+---
 
 ## Repository map
 
@@ -168,20 +162,38 @@ analysis/      figure and summary regeneration
 blender/       reproducible WGS84 scene builder, editable .blend and manifest
 config/        frozen experiment definition
 data/derived/  compact numerical audit trail
-docs/          interactive research narrative and 3D site analysis
+data/external/ global FPV catalogue transcribed from Nobre et al. (2024)
+docs/          interactive research narrative, atlas and 3D observatory
 notebooks/     complete Kaggle acquisition/inference notebook
-qgis/          editable projects and selected real raster examples
+provenance/    SHA-256 file manifest
+qgis/          editable projects and selected raster examples
 results/       pooled publication-resolution curves
 src/           data preparation and frozen inference engine
 tests/         release-integrity checks
 ```
 
-Start with [RESEARCH_REPORT.md](RESEARCH_REPORT.md), then use
-[REPRODUCIBILITY.md](REPRODUCIBILITY.md) to recreate the analysis.
+---
 
-## Sources and licensing
+## Reproducing the analysis
 
-Mission and product facts are linked in [REFERENCES.md](REFERENCES.md). Raw
-provider imagery is not redistributed wholesale. The small tracked raster
-examples are included for transparent workflow inspection; check
-[DATA_LICENSE.md](DATA_LICENSE.md) before redistribution. Code is MIT licensed.
+1. Upload this repository as a private Kaggle Dataset and attach the site-mask bundle separately.
+2. Enable Internet and use a CPU/RAM runtime. No GPU is needed.
+3. Add `EARTHDATA_TOKEN` as a Kaggle Secret (or both `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`).
+4. Run `notebooks/cross_sensor_observability_kaggle.ipynb` from top to bottom.
+
+Credentials stay inside Kaggle's secret store. The inference stage refuses to reuse an existing output directory, so a partial run can't be silently overwritten. Exact scene totals can grow as providers release new acquisitions, so respect the frozen end date in `config/experiment.json`. More detail: [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
+
+**Tools:** Python (NumPy, pandas, rasterio, OpenCV), QGIS, Blender, MapLibre, earthaccess and the Planetary Computer STAC API.
+
+---
+
+## Sources, data and licensing
+
+- Global FPV catalogue: Nobre, R. et al. (2024). *A global study of freshwater coverage by floating photovoltaics.* Solar Energy, 267, 112244. https://doi.org/10.1016/j.solener.2023.112244
+- Sentinel-1: Copernicus. NISAR: NASA-ISRO, accessed through NASA Earthdata. Full product and software references are in [REFERENCES.md](REFERENCES.md).
+- Raw provider imagery is not redistributed wholesale. The small tracked raster examples are for workflow inspection; read [DATA_LICENSE.md](DATA_LICENSE.md) before reusing anything.
+- Code is MIT licensed. Compact derived tables may be reused under CC BY 4.0 with attribution.
+
+---
+
+*This repository is a research portfolio, not a published or peer-reviewed paper. Feedback from SAR and remote-sensing practitioners is very welcome.*
