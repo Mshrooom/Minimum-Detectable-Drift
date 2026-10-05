@@ -155,38 +155,6 @@ An editable **Blender** scene in [`blender/`](blender/) contains the 517 mapped 
 
 ---
 
-## Repository map
-
-```text
-analysis/      figure and summary regeneration
-blender/       reproducible WGS84 scene builder, editable .blend and manifest
-config/        frozen experiment definition
-data/derived/  compact numerical audit trail
-data/external/ global FPV catalogue transcribed from Nobre et al. (2024)
-docs/          interactive research narrative, atlas and 3D observatory
-notebooks/     complete Kaggle acquisition/inference notebook
-provenance/    SHA-256 file manifest
-qgis/          editable projects and selected raster examples
-results/       pooled publication-resolution curves
-src/           data preparation and frozen inference engine
-tests/         release-integrity checks
-```
-
----
-
-## Reproducing the analysis
-
-1. Upload this repository as a private Kaggle Dataset and attach the site-mask bundle separately.
-2. Enable Internet and use a CPU/RAM runtime. No GPU is needed.
-3. Add `EARTHDATA_TOKEN` as a Kaggle Secret (or both `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`).
-4. Run `notebooks/cross_sensor_observability_kaggle.ipynb` from top to bottom.
-
-Credentials stay inside Kaggle's secret store. The inference stage refuses to reuse an existing output directory, so a partial run can't be silently overwritten. Exact scene totals can grow as providers release new acquisitions, so respect the frozen end date in `config/experiment.json`. More detail: [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
-
-**Tools:** Python (NumPy, pandas, rasterio, OpenCV), QGIS, Blender, MapLibre, earthaccess and the Planetary Computer STAC API.
-
----
-
 ## Sources, data and licensing
 
 - Global FPV catalogue: Nobre, R. et al. (2024). *A global study of freshwater coverage by floating photovoltaics.* Solar Energy, 267, 112244. https://doi.org/10.1016/j.solener.2023.112244
