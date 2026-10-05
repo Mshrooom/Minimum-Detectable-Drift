@@ -2,10 +2,7 @@
 
 ### Initial cross-sensor observability bounds for floating photovoltaic motion in NISAR L-band and Sentinel-1 C-band SAR
 
-[![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![QGIS](https://img.shields.io/badge/QGIS-reproducible%20raster%20lab-589632?logo=qgis&logoColor=white)](QGIS_WORKFLOW.md)
-[![Design](https://img.shields.io/badge/design-acquisition--disjoint-137B80)](METHODS.md)
-[![Status](https://img.shields.io/badge/status-initial%20bounds-F0A34A)](#what-this-is-and-is-not)
+web link for sandbox: https://mshrooom.github.io/Minimum-Detectable-Drift/
 
 > **Research question:** after forcing early NISAR L-band GCOV and historical Sentinel-1 C-band RTC observations onto the same spatial grids and applying one frozen detector, how much persistent floating-photovoltaic (FPV) translation is required before its direction is recovered reliably?
 
